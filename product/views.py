@@ -2,13 +2,35 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-
+from rest_framework.generics import ListAPIView
+from django.db.models import Avg
+from .models import Product
+from .serializers import ProductReviewSerializer
 from .models import Category, Product, Review
 from .serializers import (
     CategorySerializer,
     ProductSerializer,
     ReviewSerializer
 )
+from django.db.models import Count
+
+class CategoryListAPIView(ListAPIView):
+    serializer_class = CategorySerializer
+
+    def get_queryset(self):
+        return Category.objects.annotate(
+            products_count=Count("products")
+        )
+
+
+class ProductReviewListAPIView(ListAPIView):
+    serializer_class = ProductReviewSerializer
+
+    def get_queryset(self):
+        return Product.objects.annotate(
+            rating=Avg("reviews__stars")
+        )
+
 
 class CategoryListAPIView(APIView):
     def get(self, request):

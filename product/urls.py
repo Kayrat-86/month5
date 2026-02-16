@@ -7,6 +7,7 @@ from .views import (
     ReviewListAPIView,
     ReviewDetailAPIView
 )
+from .views import ProductReviewListAPIView
 
 urlpatterns = [
     path('categories/', CategoryListAPIView.as_view()),
@@ -17,4 +18,5 @@ urlpatterns = [
 
     path('reviews/', ReviewListAPIView.as_view()),
     path('reviews/<int:id>/', ReviewDetailAPIView.as_view()),
+    path("api/v1/products/reviews/", ProductReviewListAPIView.as_view()),
 ]
