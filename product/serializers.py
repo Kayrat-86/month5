@@ -3,6 +3,25 @@ from .models import Category, Product, Review
 from django.db.models import Avg
 
 
+class CategorySerializer(serializers.ModelSerializer):
+    products_count = serializers.IntegerField(source='products.count', read_only=True)
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'products_count']
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['id', 'text', 'stars', 'product']
+
+
 
 class CategorySerializer(serializers.ModelSerializer):
     products_count = serializers.IntegerField(read_only=True)
