@@ -1,14 +1,15 @@
-from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
-from .serializers import UserRegisterSerializer, UserConfirmSerializer
 from django.contrib.auth import get_user_model
+from .serializers import UserRegisterSerializer, UserConfirmSerializer
 
 User = get_user_model()
+
 
 class UserRegisterAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegisterSerializer
+
 
 class UserConfirmAPIView(generics.GenericAPIView):
     serializer_class = UserConfirmSerializer
@@ -17,5 +18,8 @@ class UserConfirmAPIView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"detail": "User confirmed successfully"})
+        return Response({
+            "message": "User confirmed successfully"
+        })
+
 
